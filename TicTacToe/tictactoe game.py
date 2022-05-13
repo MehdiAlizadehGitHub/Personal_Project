@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
 from IPython.display import clear_output
 
 def display_board(board):
@@ -21,18 +15,15 @@ def display_board(board):
     print('   |   |   ')
 
 
-# In[ ]:
-
-
 def player_input():
     
     marker = ''
     
-    #Ask player until he choose X or O
+    # Demandons au joueur jusqu'à ce qu'il choisisse X ou O
     
     while marker !='X' and marker !='O':
         marker=input('First Player, choose X or O: ')
-    #Asign Player 2 the opposite marker
+    # Attribuons au joueur 2 le marqueur opposé
         player1 = marker
     
     if player1 == 'X':
@@ -43,35 +34,29 @@ def player_input():
     return (player1,player2)
 
 
-# In[ ]:
-
-
 def place_marker(board, marker, position):
     board[position]=marker
 
 
-# In[ ]:
-
-
 def win_check(board, mark):
-    #WIN TIC TAC TOE?
+    # GAGNONS TIC TAC TOE ?
     
-    #All Rows check#The two diagonal#All Columns check
+    # Vérifications de toutes les lignes
+    # Les deux diagonales
+    # Vérification de toutes les colonnes
     return ((board[1]==board[2]==board[3]==mark) or 
     (board[4]==board[5]==board[6]==mark) or 
     (board[7]==board[8]==board[9]==mark) or
     
-    #The two diagonal
+    # Les deux diagonales
     (board[1]==board[5]==board[9]==mark) or 
     (board[7]==board[5]==board[3]==mark) or
     
-    #All Columns check
+    # Toutes les colonnes vérifient
     (board[1]==board[4]==board[7]==mark) or 
     (board[2]==board[5]==board[8]==mark) or 
     (board[3]==board[6]==board[9]==mark))
 
-
-# In[ ]:
 
 
 import random
@@ -86,14 +71,11 @@ def choose_first():
         return 'Player 2'
 
 
-# In[ ]:
-
 
 def space_check(board, position):
     return board[position]== ' '
 
 
-# In[ ]:
 
 
 def full_board_check(board):
@@ -104,9 +86,6 @@ def full_board_check(board):
     return True
 
 
-# In[ ]:
-
-
 def player_choice(board):
     position=0
     while position not in [1,2,3,4,5,6,7,8,9] or not space_check(board,position):
@@ -114,21 +93,17 @@ def player_choice(board):
     return position
 
 
-# In[ ]:
-
 
 def replay():
     choice = input('Play again? Enter Yes or No :')
     return choice == 'Yes'
 
 
-# In[ ]:
-
 
 print('Welcome to Tic Tac Toe!')
 
 while True:
-    # Set the game up here
+    # Configurez le jeu ici
     the_board = [' ']*10
     player1_marker,player2_marker = player_input()
     
@@ -142,18 +117,18 @@ while True:
     else:
         game_on=False
        
-    #Game Play
+    # Jouer au jeu
 
     while game_on:
         
         if turn == 'Player 1':
-            #Show the board
+            # Montrer le tableau
             display_board(the_board)
-            #Choose a position
+            # Choisissez un poste
             position = player_choice(the_board)
-            #Place a marker on the position
+            # Placer un marqueur sur la position
             place_marker(the_board,player1_marker,position)
-            #Check if they won
+            # Vérifiez s'ils ont gagné
             if win_check(the_board,player1_marker):
                 display_board(the_board)
                 print('PLAYER 1 HAS WON!')
@@ -165,16 +140,16 @@ while True:
                     game_on=False
                 else:
                     turn = "Player 2"
-        #Player 1 Turn
+        # Tour du joueur 1
                     
         else:
-            #Show the board
+            # Afficher le tableau
             display_board(the_board)
-            #Choose a position
+            # Choisissez un poste
             position = player_choice(the_board)
-            #Place a marker on the position
+            # Placer un marqueur sur la position
             place_marker(the_board,player2_marker,position)
-            #Check if they won
+            # Vérifiez s'ils ont gagné
             if win_check(the_board,player2_marker):
                 display_board(the_board)
                 print('PLAYER 2 HAS WON!')
@@ -187,14 +162,13 @@ while True:
                 else:
                     turn = "Player 1"
         
-        # Player2's turn.
+        # Au tour du joueur 2.
 
 
     if not replay():
         break
 
 
-# In[ ]:
 
 
 
