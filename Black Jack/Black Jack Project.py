@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import random
 
 suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
@@ -13,8 +7,6 @@ values = {'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7, 'Eight':8,
 
 playing = True
 
-
-# In[2]:
 
 
 class Card:
@@ -27,21 +19,18 @@ class Card:
         return self.rank+' of '+self.suit
 
 
-# In[3]:
-
-
 class Deck:
     
     def __init__(self):
-        self.deck = []  # start with an empty list
+        self.deck = []  # commençons avec une liste vide
         for suit in suits:
             for rank in ranks:
-                self.deck.append(Card(suit,rank))  # build Card objects and add them to the list
+                self.deck.append(Card(suit,rank))  # construisons des objets Card et les ajouter à la liste
     
     def __str__(self):
-        deck_comp = ''  # start with an empty string
+        deck_comp = ''  # commençons par une chaîne vide
         for card in self.deck:
-            deck_comp += '\n '+card.__str__() # add each Card object's print string
+            deck_comp += '\n '+card.__str__() # ajoutons la chaîne d'impression de chaque objet Card
         return 'The deck has:' + deck_comp
 
     def shuffle(self):
@@ -52,21 +41,18 @@ class Deck:
         return single_card
 
 
-# In[4]:
-
-
 class Hand:
     
     def __init__(self):
-        self.cards = []  # start with an empty list as we did in the Deck class
-        self.value = 0   # start with zero value
-        self.aces = 0    # add an attribute to keep track of aces
+        self.cards = []  # commençons par une liste vide comme nous l'avons fait dans la classe Deck
+        self.value = 0   # commençons avec la valeur zéro
+        self.aces = 0    # ajoutons un attribut pour garder une trace des as
     
     def add_card(self,card):
         self.cards.append(card)
         self.value += values[card.rank]
         if card.rank == 'Ace':
-            self.aces += 1  # add to self.aces
+            self.aces += 1  # ajoutons à self.aces
     
     def adjust_for_ace(self):
         while self.value > 21 and self.aces:
@@ -74,13 +60,10 @@ class Hand:
             self.aces -= 1 
 
 
-# In[5]:
-
-
 class Chips:
     
     def __init__(self):
-        self.total = 100  # This can be set to a default value or supplied by a user input
+        self.total = 100  # Cela peut être défini sur une valeur par défaut ou fourni par une entrée utilisateur
         self.bet = 0
         
     def win_bet(self):
@@ -88,9 +71,6 @@ class Chips:
     
     def lose_bet(self):
         self.total -= self.bet
-
-
-# In[6]:
 
 
 def take_bet(chips):
@@ -107,8 +87,6 @@ def take_bet(chips):
                 break
 
 
-# In[7]:
-
 
 def hit(deck,hand):
     
@@ -116,17 +94,15 @@ def hit(deck,hand):
     hand.adjust_for_ace()
 
 
-# In[8]:
-
 
 def hit_or_stand(deck,hand):
-    global playing  # to control an upcoming while loop
+    global playing  # pour contrôler une boucle while à venir
     
     while True:
         x = input("Would you like to Hit or Stand? Enter 'h' or 's' ")
         
         if x[0].lower() == 'h':
-            hit(deck,hand)  # hit() function defined above
+            hit(deck,hand)  # fonction hit() définie ci-dessus
 
         elif x[0].lower() == 's':
             print("Player stands. Dealer is playing.")
@@ -137,8 +113,6 @@ def hit_or_stand(deck,hand):
             continue
         break
 
-
-# In[9]:
 
 
 def show_some(player,dealer):
@@ -153,8 +127,6 @@ def show_all(player,dealer):
     print("\nPlayer's Hand:", *player.cards, sep='\n ')
     print("Player's Hand =",player.value)
 
-
-# In[10]:
 
 
 def player_busts(player,dealer,chips):
@@ -177,14 +149,12 @@ def push(player,dealer):
     print("Dealer and Player tie! It's a push.")
 
 
-# In[11]:
-
 
 while True:
-    # Print an opening statement
+    # Imprimons une phrase d'ouverture
     print('Welcome to BlackJack! Get as close to 21 as you can without going over!\n    Dealer hits until she reaches 17. Aces count as 1 or 11.')
     
-    # Create & shuffle the deck, deal two cards to each player
+    # Créons et mélangons le jeu, distribuons deux cartes à chaque joueur
     deck = Deck()
     deck.shuffle()
     
@@ -196,39 +166,39 @@ while True:
     dealer_hand.add_card(deck.deal())
     dealer_hand.add_card(deck.deal())
             
-    # Set up the Player's chips
-    player_chips = Chips()  # remember the default value is 100    
+    # Configurons les jetons du joueur
+    player_chips = Chips()  
     
-    # Prompt the Player for their bet
+    # Invitons le joueur à parier
     take_bet(player_chips)
     
-    # Show cards (but keep one dealer card hidden)
+    # Montrons les cartes 
     show_some(player_hand,dealer_hand)
     
-    while playing:  # recall this variable from our hit_or_stand function
+    while playing:  # rappelons cette variable de notre fonction hit_or_stand
         
-        # Prompt for Player to Hit or Stand
+        # Demandons au joueur de frapper ou de se tenir
         hit_or_stand(deck,player_hand) 
         
-        # Show cards (but keep one dealer card hidden)
+        # Montrons les cartes 
         show_some(player_hand,dealer_hand)  
         
-        # If player's hand exceeds 21, run player_busts() and break out of loop
+        # Si la main du joueur dépasse 21, exécutons player_busts() et sortons de la boucle
         if player_hand.value > 21:
             player_busts(player_hand,dealer_hand,player_chips)
             break        
 
 
-    # If Player hasn't busted, play Dealer's hand until Dealer reaches 17 
+    # Si le joueur n'a pas éclaté, jouons la main du croupier jusqu'à ce que le croupier atteigne 17
     if player_hand.value <= 21:
         
         while dealer_hand.value < 17:
             hit(deck,dealer_hand)    
     
-        # Show all cards
+        # Affichons toutes les cartes
         show_all(player_hand,dealer_hand)
         
-        # Run different winning scenarios
+        # Exécutons différents scénarios gagnants
         if dealer_hand.value > 21:
             dealer_busts(player_hand,dealer_hand,player_chips)
 
@@ -241,10 +211,10 @@ while True:
         else:
             push(player_hand,dealer_hand)        
     
-    # Inform Player of their chips total 
+    # Informons le joueur de son total de jetons
     print("\nPlayer's winnings stand at",player_chips.total)
     
-    # Ask to play again
+    # Demandons à rejouer
     new_game = input("Would you like to play another hand? Enter 'y' or 'n' ")
     
     if new_game[0].lower()=='y':
@@ -253,10 +223,4 @@ while True:
     else:
         print("Thanks for playing!")
         break
-
-
-# In[ ]:
-
-
-
 
